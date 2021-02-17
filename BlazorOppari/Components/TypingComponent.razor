@@ -8,32 +8,28 @@
 @inject ISqlAccess _sql
 @inject IConfiguration _config
 
+
 @if (countdown != 0)
 {
-    <h1>@countdown</h1>
+    <p style="font-size: 40px">@countdown</p>
 }
 else
 {
-    <h1>@currentWord</h1>
+    <p style="font-size: 40px">@currentWord</p>
 }
 
 @if (!gameOver)
 {
     <!-- Selitä bindit ja tuo onkeyup valinta -->
-    <div>
-        <input @bind="wordGuess" @bind:event="oninput" @onkeyup="@CheckGuess" />
-        <p>sana: @wordGuess</p>
-    </div>
-
+    <input style="height: 35px;margin-bottom: 1rem;" @bind="wordGuess" @bind:event="oninput" @onkeyup="@CheckGuess" />
 }
 else
 {
-    <p>Nice job!</p>
+    <p style="height: 35px">Nice job!</p>
 }
 
-
-
-@code {
+@code
+{
     private static System.Timers.Timer timer;
     private Stopwatch stopwatch = new Stopwatch();
 
@@ -51,7 +47,7 @@ else
 
         words = await _sql.LoadSqlData<WordModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
 
-        SetTimer();
+        SetCountdownTimer();
     }
 
     private void CheckGuess()
@@ -81,7 +77,7 @@ else
     }
 
     // COUNTDOWN TIMER METHODS BELOW
-    private void SetTimer()
+    private void SetCountdownTimer()
     {
         // Create a timer with a one second interval.
         timer = new System.Timers.Timer(1000);
