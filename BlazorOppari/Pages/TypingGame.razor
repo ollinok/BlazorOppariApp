@@ -1,0 +1,31 @@
+﻿@page "/typing"
+
+<h3 class="text-center">Typing Game</h3><br />
+
+<div class="text-center">
+@if (!startFlag)
+{
+    <p>How fast can you type the the random appearing words?</p>
+    <p>Click the Start button to find out!</p><br />
+
+    <button class="btn btn-success" @onclick="GameStart">Start</button>
+}
+else
+{
+    <BlazorOppari.Components.TypingComponent />
+
+    <button class="btn btn-warning" @onclick="GameStart">Go Back</button>
+}
+
+</div>
+
+@code {
+
+    private bool startFlag;
+
+    private void GameStart()
+    {
+        startFlag = !startFlag;
+    }
+
+}
