@@ -15,11 +15,7 @@
 @if (!gameOver)
 {
     <!-- Selitä bindit ja tuo onkeyup valinta -->
-    <div>
-        <input @bind="wordGuess" @bind:event="oninput" @onkeyup="@CheckGuess" />
-        <p>sana: @wordGuess</p>
-    </div>
-
+    <input style="height: 35px;margin-bottom: 1rem;" @bind="wordGuess" @bind:event="oninput" @onkeyup="@CheckGuess" />
 }
 else
 {
@@ -48,7 +44,7 @@ else
 
         words = await _sql.LoadSqlData<WordModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
 
-        SetTimer();
+        SetCountdownTimer();
     }
 
     private void CheckGuess()
@@ -78,7 +74,7 @@ else
     }
 
     // COUNTDOWN TIMER METHODS BELOW
-    private void SetTimer()
+    private void SetCountdownTimer()
     {
         timer = new System.Timers.Timer(1000);
         timer.Elapsed += OnTimedEvent;
