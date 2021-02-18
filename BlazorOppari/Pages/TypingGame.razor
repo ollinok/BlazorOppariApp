@@ -1,4 +1,4 @@
-﻿@page "/typing"
+@page "/typing"
 
 <h2 class="text-center">Typing Game</h2><br />
 
@@ -15,11 +15,11 @@
         else
         {
             <div class="p-2">
-                <BlazorOppari.Components.TypingComponent />
+                <BlazorOppari.Components.TypingComponent @ref="typingComp"/>
             </div>
 
             <div class="p-2">
-                <button class="btn btn-warning" @onclick="GameStart">Go Back</button>
+                <button class="btn btn-warning" @onclick="GameStop">Go Back</button>
             </div>  
         }
     </div>
@@ -31,11 +31,19 @@
 </div>
 
 @code {
-
+    private BlazorOppari.Components.TypingComponent typingComp;
     private bool startFlag;
 
     private void GameStart()
     {
+        startFlag = !startFlag;
+    }
+
+    // Bugi korjattu:
+    // Metodikutsu child-komponenttiin ei onnistunut GameStart()issa, koska komponenttia ei oltu vielä tehty if-elsen takia
+    private void GameStop()
+    {
+        typingComp.StopTimer();
         startFlag = !startFlag;
     }
 

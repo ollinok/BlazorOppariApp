@@ -1,4 +1,4 @@
-﻿@using DatabaseLib
+@using DatabaseLib
 @using BlazorOppari.Data
 @using Microsoft.Extensions.Configuration
 @using System.Timers
@@ -8,15 +8,9 @@
 @inject ISqlAccess _sql
 @inject IConfiguration _config
 
-
-@if (countdown != 0)
-{
-    <p style="font-size: 40px">@countdown</p>
-}
-else
-{
-    <p style="font-size: 40px">@currentWord</p>
-}
+<p style="font-size: 40px">
+    @(countdown != 0 ? countdown : currentWord)
+</p>
 
 @if (!gameOver)
 {
@@ -26,11 +20,14 @@ else
 else
 {
     <p style="height: 35px">Nice job!</p>
+
+    <!-- Tähän EditFormi joka ottaa high scoren ja vie sen tietokantaan -->
+    <!-- if (madeHighScore) < Lataa Formi > else < Pahoittelu msg > -->
 }
 
 @code
 {
-    private static System.Timers.Timer timer;
+    private static Timer timer;
     private Stopwatch stopwatch = new Stopwatch();
 
     private List<WordModel> words;
@@ -79,12 +76,19 @@ else
     // COUNTDOWN TIMER METHODS BELOW
     private void SetCountdownTimer()
     {
-        // Create a timer with a one second interval.
         timer = new System.Timers.Timer(1000);
-        // Hook up the Elapsed event for the timer.
         timer.Elapsed += OnTimedEvent;
         timer.AutoReset = true;
         timer.Enabled = true;
+    }
+
+    public void StopTimer()
+    {
+        if (timer.Enabled)
+        {
+            timer.Stop();
+            timer.Dispose();
+        }
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -98,8 +102,7 @@ else
         {
             countdown--;
             GetWord();
-            timer.Stop();
-            timer.Dispose();
+            StopTimer();
 
             stopwatch.Start();
         }
