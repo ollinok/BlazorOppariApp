@@ -2,29 +2,44 @@
 
 <h3 class="text-center">Typing Game</h3><br />
 
-<div class="text-center">
-@if (!startFlag)
-{
-    <p>How fast can you type the the random appearing words?</p>
-    <p>Click the Start button to find out!</p><br />
+<div class="container" style="height: 800px;">
+    <div class="h-40 d-flex justify-content-around flex-column text-center">
+        @if (!startFlag)
+        {
+            <div class="p-2">
+                <p>How fast can you type the the random appearing words?</p>
+                <p>Click the Start button to find out!</p>
+                <button class="btn btn-success" @onclick="GameStart">Start</button>
+            </div>
+        }
+        else
+        {
+            <div class="p-2">
+                <BlazorOppari.Components.TypingComponent @ref="typingComp"/>
+            </div>
 
-    <button class="btn btn-success" @onclick="GameStart">Start</button>
-}
-else
-{
-    <BlazorOppari.Components.TypingComponent />
-
-    <button class="btn btn-warning" @onclick="GameStart">Go Back</button>
-}
+            <div class="p-2">
+                <button class="btn btn-warning" @onclick="GameStop">Go Back</button>
+            </div>  
+        }
+    </div>
 
 </div>
 
 @code {
-
+    private BlazorOppari.Components.TypingComponent typingComp;
     private bool startFlag;
 
     private void GameStart()
     {
+        startFlag = !startFlag;
+    }
+
+    // Bugi korjattu:
+    // Metodikutsu child-komponenttiin ei onnistunut GameStart()issa, koska komponenttia ei oltu vielä tehty if-elsen takia
+    private void GameStop()
+    {
+        typingComp.StopTimer();
         startFlag = !startFlag;
     }
 

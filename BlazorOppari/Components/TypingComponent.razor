@@ -8,14 +8,9 @@
 @inject ISqlAccess _sql
 @inject IConfiguration _config
 
-@if (countdown != 0)
-{
-    <h1>@countdown</h1>
-}
-else
-{
-    <h1>@currentWord</h1>
-}
+<p style="font-size: 40px">
+    @(countdown != 0 ? countdown : currentWord)
+</p>
 
 @if (!gameOver)
 {
@@ -28,13 +23,15 @@ else
 }
 else
 {
-    <p>Nice job!</p>
+    <p style="height: 35px">Nice job!</p>
+
+    <!-- Tähän EditFormi joka ottaa high scoren ja vie sen tietokantaan -->
+    <!-- if (madeHighScore) < Lataa Formi > else < Pahoittelu msg > -->
 }
 
-
-
-@code {
-    private static System.Timers.Timer timer;
+@code
+{
+    private static Timer timer;
     private Stopwatch stopwatch = new Stopwatch();
 
     private List<WordModel> words;
@@ -83,12 +80,19 @@ else
     // COUNTDOWN TIMER METHODS BELOW
     private void SetTimer()
     {
-        // Create a timer with a one second interval.
         timer = new System.Timers.Timer(1000);
-        // Hook up the Elapsed event for the timer.
         timer.Elapsed += OnTimedEvent;
         timer.AutoReset = true;
         timer.Enabled = true;
+    }
+
+    public void StopTimer()
+    {
+        if (timer.Enabled)
+        {
+            timer.Stop();
+            timer.Dispose();
+        }
     }
 
     private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -102,8 +106,7 @@ else
         {
             countdown--;
             GetWord();
-            timer.Stop();
-            timer.Dispose();
+            StopTimer();
 
             stopwatch.Start();
         }
