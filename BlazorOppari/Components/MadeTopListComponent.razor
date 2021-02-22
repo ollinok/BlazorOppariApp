@@ -1,0 +1,30 @@
+﻿@using DatabaseLib
+@using BlazorOppari.Data
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration _config
+@inject ISqlAccess _sql   
+
+<h3>You made the top list!</h3>
+
+<EditForm Model="@highScore" OnValidSubmit="@SendData">
+
+    <InputText id="name" @bind-Value="highScore.Username" />
+    <button class="btn btn-primary" type="submit">Send</button>
+</EditForm>
+
+@code {
+    private HighScoreModel highScore = new HighScoreModel();
+
+    [CascadingParameter(Name = "TotalTime")]
+    private double totalTime { get; set; }
+
+    private async Task SendData()
+    {
+        highScore.Time = totalTime;
+        string sql = "insert into highscore (time, username) values (@Time, @Username);";
+
+        await _sql.WriteSqlData(sql, highScore, _config.GetConnectionString("default"));
+    }
+
+}

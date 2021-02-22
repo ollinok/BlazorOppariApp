@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOppari", "BlazorOppari\BlazorOppari.csproj", "{3578D210-F217-47A1-89C3-83345A4FB7F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLib", "DatabaseLib\DatabaseLib.csproj", "{1EF28390-2C53-4994-96F5-0427FC628936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseLib", "DatabaseLib\DatabaseLib.csproj", "{1EF28390-2C53-4994-96F5-0427FC628936}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
