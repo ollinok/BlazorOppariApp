@@ -7,7 +7,6 @@
 @inject IConfiguration _config
 @inject ISqlAccess _sql
 
-
 <h2 class="text-center">Typing Game</h2>
 <br />
 
@@ -24,6 +23,7 @@
         else
         {
             <div class="p-2">
+                <!-- Selitä CascadingValue -->
                 <CascadingValue Value="lowestScore" Name="LowestScore">
                     <BlazorOppari.Components.TypingComponent @ref="typingComp" />
                 </CascadingValue>
@@ -92,5 +92,4 @@
         scores = await _sql.LoadSqlData<HighScoreModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
         lowestScore = scores.LastOrDefault().Time;
     }
-
 }

@@ -3,7 +3,7 @@
 @using Microsoft.Extensions.Configuration
 
 @inject IConfiguration _config
-@inject ISqlAccess _sql   
+@inject ISqlAccess _sql
 
 <h3>You made the top list!</h3>
 
@@ -26,5 +26,4 @@
 
         await _sql.WriteSqlData(sql, highScore, _config.GetConnectionString("default"));
     }
-
 }
