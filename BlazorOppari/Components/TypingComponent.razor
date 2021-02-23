@@ -29,7 +29,7 @@ else
     else
     {
         <CascadingValue Value="totalTime" Name="TotalTime">
-            <MadeTopListComponent />
+            <MadeTopListComponent RefreshTypingGame="@RefreshRequest"/>
         </CascadingValue>
     }
 }
@@ -51,6 +51,15 @@ else
     // From TypingGame.razor
     [CascadingParameter(Name = "LowestScore")]
     private double lowestScore { get; set; }
+
+    // Callback from MadeTopListComponent.razor
+    [Parameter]
+    public EventCallback RefreshTypingGame { get; set; }
+
+    private async void RefreshRequest()
+    {
+        await RefreshTypingGame.InvokeAsync();
+    }
 
     protected override async Task OnInitializedAsync()
     {

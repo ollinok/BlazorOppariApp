@@ -19,11 +19,17 @@
     [CascadingParameter(Name = "TotalTime")]
     private double totalTime { get; set; }
 
+    // SELITÄ ERITYISESTI TÄMÄ HÄSSÄKKÄ MILLÄ PÄIVITYSPYYNTÖ VIEDÄÄN YLÖS
+    [Parameter]
+    public EventCallback RefreshTypingGame { get; set; }
+
     private async Task SendData()
     {
         highScore.Time = totalTime;
         string sql = "insert into highscore (time, username) values (@Time, @Username);";
 
         await _sql.WriteSqlData(sql, highScore, _config.GetConnectionString("default"));
+
+        await RefreshTypingGame.InvokeAsync();
     }
 }

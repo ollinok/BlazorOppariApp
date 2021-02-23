@@ -25,7 +25,7 @@
             <div class="p-2">
                 <!-- Selitä CascadingValue -->
                 <CascadingValue Value="lowestScore" Name="LowestScore">
-                    <BlazorOppari.Components.TypingComponent @ref="typingComp" />
+                    <BlazorOppari.Components.TypingComponent @ref="typingComp" RefreshTypingGame="@GameStop"/>
                 </CascadingValue>
             </div>
 
@@ -75,7 +75,6 @@
         startFlag = !startFlag;
     }
 
-    // Bugi korjattu:
     // Metodikutsu child-komponenttiin ei onnistunut GameStart()issa, koska komponenttia ei oltu vielä tehty if-elsen takia
     private async void GameStop()
     {
