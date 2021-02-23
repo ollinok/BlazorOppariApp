@@ -26,6 +26,12 @@ a, .btn-link {
     outline: 1px solid red;
 }
 
+.validation-errors {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .validation-message {
     color: red;
 }

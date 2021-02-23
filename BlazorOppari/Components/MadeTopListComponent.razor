@@ -8,9 +8,10 @@
 <h3>You made the top list!</h3>
 
 <EditForm Model="@highScore" OnValidSubmit="@SendData">
-
-    <InputText id="name" @bind-Value="highScore.Username" />
+    <DataAnnotationsValidator />
+    <InputText id="name" placeholder="Your name" @bind-Value="highScore.Username" />
     <button class="btn btn-primary" type="submit">Send</button>
+    <ValidationSummary />
 </EditForm>
 
 @code {

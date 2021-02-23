@@ -22,14 +22,14 @@
         }
         else
         {
-            <div class="p-2">
+            <div class="p-2 h-75 d-inline-flex justify-content-start flex-column align-items-center mt-4">
                 <!-- Selitä CascadingValue -->
                 <CascadingValue Value="lowestScore" Name="LowestScore">
                     <BlazorOppari.Components.TypingComponent @ref="typingComp" RefreshTypingGame="@GameStop"/>
                 </CascadingValue>
             </div>
 
-            <div class="p-2">
+            <div class="p-2 h-25">
                 <button class="btn btn-warning" @onclick="GameStop">Go Back</button>
             </div>
         }
@@ -43,7 +43,7 @@
         }
         else
         {
-            <table>
+            <table class="table table-bordered">
                 <tr>
                     <td>Name:</td>
                     <td>Time:</td>
@@ -58,7 +58,6 @@
                     </tr>
                 }
             </table>
-            <p>@lowestScore</p>
         }
     </div>
 </div>
