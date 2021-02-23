@@ -19,10 +19,17 @@
 }
 else
 {
-    <p style="height: 35px">Nice job!</p>
-
     <!-- Tähän EditFormi joka ottaa high scoren ja vie sen tietokantaan -->
-    <!-- if (madeHighScore) < Lataa Formi > else < Pahoittelu msg > -->
+    if (lowestScore <= totalTime)
+    {
+        <p>You didn't make the top list.</p>
+    }
+    else
+    {
+        <CascadingValue Value="totalTime" Name="TotalTime">
+            <MadeTopListComponent RefreshTypingGame="@RefreshRequest"/>
+        </CascadingValue>
+    }
 }
 
 @code
@@ -33,10 +40,24 @@ else
     private List<WordModel> words;
     private string wordGuess { get; set; }
     private string currentWord;
+    private double totalTime;
     private int wordIndex = 1;
 
     private int countdown = 3;
     private bool gameOver;
+
+    // From TypingGame.razor
+    [CascadingParameter(Name = "LowestScore")]
+    private double lowestScore { get; set; }
+
+    // Callback from MadeTopListComponent.razor
+    [Parameter]
+    public EventCallback RefreshTypingGame { get; set; }
+
+    private async void RefreshRequest()
+    {
+        await RefreshTypingGame.InvokeAsync();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,6 +84,7 @@ else
         {
             stopwatch.Stop();
             currentWord = String.Format("{0} seconds", stopwatch.ElapsedMilliseconds / 1000.0);
+            totalTime = stopwatch.ElapsedMilliseconds / 1000.0;
             gameOver = true;
         }
         else

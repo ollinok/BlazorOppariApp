@@ -1,0 +1,36 @@
+﻿@using DatabaseLib
+@using BlazorOppari.Data
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration _config
+@inject ISqlAccess _sql
+
+<h3>You made the top list!</h3>
+
+<EditForm Model="@highScore" OnValidSubmit="@SendData">
+    <DataAnnotationsValidator />
+    <InputText id="name" placeholder="Your name" @bind-Value="highScore.Username" />
+    <button class="btn btn-primary" type="submit">Send</button>
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    private HighScoreModel highScore = new HighScoreModel();
+
+    [CascadingParameter(Name = "TotalTime")]
+    private double totalTime { get; set; }
+
+    // SELITÄ ERITYISESTI TÄMÄ HÄSSÄKKÄ MILLÄ PÄIVITYSPYYNTÖ VIEDÄÄN YLÖS
+    [Parameter]
+    public EventCallback RefreshTypingGame { get; set; }
+
+    private async Task SendData()
+    {
+        highScore.Time = totalTime;
+        string sql = "insert into highscore (time, username) values (@Time, @Username);";
+
+        await _sql.WriteSqlData(sql, highScore, _config.GetConnectionString("default"));
+
+        await RefreshTypingGame.InvokeAsync();
+    }
+}

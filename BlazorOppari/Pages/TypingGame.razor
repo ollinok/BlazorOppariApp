@@ -1,6 +1,14 @@
 @page "/typing"
 
-<h2 class="text-center">Typing Game</h2><br />
+@using DatabaseLib
+@using BlazorOppari.Data
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration _config
+@inject ISqlAccess _sql
+
+<h2 class="text-center">Typing Game</h2>
+<br />
 
 <div class="container" style="height: 800px;">
     <div class="h-40 d-flex justify-content-around flex-column text-center">
@@ -14,23 +22,50 @@
         }
         else
         {
-            <div class="p-2">
-                <BlazorOppari.Components.TypingComponent @ref="typingComp"/>
+            <div class="p-2 h-75 d-inline-flex justify-content-start flex-column align-items-center mt-4">
+                <!-- Selitä CascadingValue -->
+                <CascadingValue Value="lowestScore" Name="LowestScore">
+                    <BlazorOppari.Components.TypingComponent @ref="typingComp" RefreshTypingGame="@GameStop"/>
+                </CascadingValue>
             </div>
 
-            <div class="p-2">
+            <div class="p-2 h-25">
                 <button class="btn btn-warning" @onclick="GameStop">Go Back</button>
-            </div>  
+            </div>
         }
     </div>
 
     <div class="h-60 text-center">
         <h4>Leaderboards</h4>
-        <p>Nothing here</p>
+        @if (scores == null)
+        {
+            <p>Loading high scores...</p>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <td>Name:</td>
+                    <td>Time:</td>
+                    <td>Date and time:</td>
+                </tr>
+                @foreach (var s in scores)
+                {
+                    <tr>
+                        <td>@s.Username</td>
+                        <td>@s.Time</td>
+                        <td>@s.Datetime</td>
+                    </tr>
+                }
+            </table>
+        }
     </div>
 </div>
 
 @code {
+    private List<HighScoreModel> scores;
+    private double lowestScore;
+
     private BlazorOppari.Components.TypingComponent typingComp;
     private bool startFlag;
 
@@ -39,12 +74,20 @@
         startFlag = !startFlag;
     }
 
-    // Bugi korjattu:
     // Metodikutsu child-komponenttiin ei onnistunut GameStart()issa, koska komponenttia ei oltu vielä tehty if-elsen takia
-    private void GameStop()
+    private async void GameStop()
     {
         typingComp.StopTimer();
         startFlag = !startFlag;
+
+        await OnInitializedAsync();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        string sql = "select * from highscore order by time asc limit 10";
+
+        scores = await _sql.LoadSqlData<HighScoreModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        lowestScore = scores.LastOrDefault().Time;
+    }
 }
