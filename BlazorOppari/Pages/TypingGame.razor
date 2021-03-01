@@ -2,6 +2,7 @@
 
 @using DatabaseLib
 @using BlazorOppari.Data
+@using BlazorOppari.Components 
 @using Microsoft.Extensions.Configuration
 
 @inject IConfiguration _config
@@ -24,7 +25,7 @@
             <div class="p-2 h-75 d-inline-flex justify-content-start flex-column align-items-center mt-4">
                 <!-- Selitä CascadingValue -->
                 <CascadingValue Value="lowestScore" Name="LowestScore">
-                    <BlazorOppari.Components.TypingComponent @ref="typingComp" RefreshTypingGame="@GameStop"/>
+                    <TypingComponent @ref="typingComp" RefreshTypingGame="@GameStop"/>
                 </CascadingValue>
             </div>
 
@@ -65,7 +66,7 @@
     private List<HighScoreModel> scores;
     private double lowestScore;
 
-    private BlazorOppari.Components.TypingComponent typingComp;
+    private TypingComponent typingComp;
     private bool startFlag;
 
     private void GameStart()
