@@ -1,0 +1,29 @@
+services:
+  db:
+    build: ./DatabaseLib
+    ports:
+      - 3306:3306
+    networks:
+      nw:
+        ipv4_address: 172.25.100.11
+    volumes:
+      - voldb:/var/lib/mysql
+  app:
+    build: ./BlazorOppari
+    ports:
+      - 8080:80
+    networks:
+      nw:
+        ipv4_address: 172.25.100.10
+    depends_on:
+      - db
+
+networks:
+  nw:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.25.100.0/16"
+
+volumes:
+  voldb:
