@@ -1,5 +1,6 @@
 services:
   db:
+    container_name: oppari-db
     build: ./DatabaseLib
     ports:
       - 3306:3306
@@ -9,7 +10,10 @@ services:
     volumes:
       - voldb:/var/lib/mysql
   app:
-    build: ./BlazorOppari
+    container_name: oppari-app
+    build:
+      context: .
+      dockerfile: BlazorOppari/Dockerfile
     ports:
       - 8080:80
     networks:
@@ -20,6 +24,7 @@ services:
 
 networks:
   nw:
+    name: oppari-nw
     ipam:
       driver: default
       config:
@@ -27,3 +32,4 @@ networks:
 
 volumes:
   voldb:
+    name: oppari-vol
